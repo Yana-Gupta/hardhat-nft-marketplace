@@ -20,6 +20,7 @@ contract NftMarketplace is ReentrancyGuard {
     address seller;
   }
 
+  // Mappings
   mapping(address => mapping(uint256 => Listing)) private s_listings;
   mapping(address => uint256) private s_proceeds;
 
@@ -88,13 +89,10 @@ contract NftMarketplace is ReentrancyGuard {
     if (price <= 0) {
       revert NftMarketplace__PriceMustBeAboveZero();
     }
-
     IERC721 nft = IERC721(nftAddress);
-
     if (nft.getApproved(tokenId) != nftAddress) {
       revert NftMarketplace__NftNotApproved();
     }
-
     s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
     emit ItemListed(msg.sender, nftAddress, tokenId, price);
   }
